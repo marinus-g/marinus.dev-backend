@@ -1,0 +1,39 @@
+services:
+  marinus-dev-backend:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/code
+      - marinus-dev-backend:/var/log
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 200M
+        reservations:
+          cpus: '1.50'
+          memory: 200M
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: marinus-dev-backend
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: adminpw
+      MYSQL_ROOT_PASSWORD: rootpw
+    ports:
+      - "3306:3306"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+        reservations:
+          cpus: '0.10'
+          memory: 50M
+volumes:
+  marinus-dev-backend: { }

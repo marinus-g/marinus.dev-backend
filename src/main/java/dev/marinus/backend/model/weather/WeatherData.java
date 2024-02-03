@@ -1,11 +1,15 @@
 package dev.marinus.backend.model.weather;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "weather_data")
+@AllArgsConstructor
+@NoArgsConstructor
 public class WeatherData {
 
     @Getter

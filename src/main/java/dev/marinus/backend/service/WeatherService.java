@@ -55,38 +55,7 @@ public class WeatherService {
                 "&aqi=no" +
                 "&alerts=no").formatted(backendConfiguration.getWeatherApiKey(), city);
         HttpClient client = HttpClient.newHttpClient();
-        HttpsURLConnection urlConnection = new HttpsURLConnection() {
-            @Override
-            public String getCipherSuite() {
-                return null;
-            }
-
-            @Override
-            public Certificate[] getLocalCertificates() {
-                return new Certificate[0];
-            }
-
-            @Override
-            public Certificate[] getServerCertificates() throws SSLPeerUnverifiedException {
-                return new Certificate[0];
-            }
-
-            @Override
-            public void disconnect() {
-
-            }
-
-            @Override
-            public boolean usingProxy() {
-                return false;
-            }
-
-            @Override
-            public void connect() throws IOException {
-
-            }
-        }
-        client.send(HttpURLConnection.(url), HttpResponse.BodyHandlers.ofString()
+        //client.send(HttpURLConnection.(url), HttpResponse.BodyHandlers.ofString()
         return Optional.empty();
     }
 }

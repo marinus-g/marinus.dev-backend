@@ -24,15 +24,15 @@ public class Weather {
 
     @NonNull
     private String city;
-
-    @OneToOne(mappedBy = "weather")
+    @OneToOne()
+    @JoinColumn(name = "current_weather_data_id")
     private WeatherData current;
     private Date lastUpdate;
 
-    @OneToMany(mappedBy = "weather")
+    @OneToMany(mappedBy = "id")
     private List<ForecastedWeather> forecast;
 
-   public void addForecast(ForecastedWeather weather) {
+    public void addForecast(ForecastedWeather weather) {
         forecast.add(weather);
-   }
+    }
 }

@@ -11,7 +11,6 @@ import java.util.Date;
 @Getter
 public class ForecastedWeather {
 
-
     @Id
     @Setter
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -19,7 +18,8 @@ public class ForecastedWeather {
 
     private Date date;
     private Date lastUpdate;
-    @OneToOne(mappedBy = "forecasted_weather")
+    @OneToOne()
+    @JoinColumn(name = "forecasted_weather_data_id")
     private WeatherData weatherData;
 
 }
