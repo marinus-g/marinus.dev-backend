@@ -1,8 +1,8 @@
 package dev.marinus.backend.controller;
 
 import dev.marinus.backend.dto.AuthenticationDto;
-import dev.marinus.backend.model.Authenticatable;
-import dev.marinus.backend.model.user.User;
+import dev.marinus.backend.model.entity.Authenticatable;
+import dev.marinus.backend.model.entity.user.User;
 import dev.marinus.backend.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;

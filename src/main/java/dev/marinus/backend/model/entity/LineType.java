@@ -1,4 +1,4 @@
-package dev.marinus.backend.model;
+package dev.marinus.backend.model.entity;
 
 public enum LineType {
     NORMAL,

@@ -1,4 +1,4 @@
-package dev.marinus.backend.model.content.impl;
+package dev.marinus.backend.model.entity.content.impl;
 
 public class StaticCommandContent extends CommandContent {
 

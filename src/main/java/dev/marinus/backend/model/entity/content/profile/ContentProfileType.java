@@ -1,4 +1,4 @@
-package dev.marinus.backend.model.content.profile;
+package dev.marinus.backend.model.entity.content.profile;
 
 public enum ContentProfileType {
 

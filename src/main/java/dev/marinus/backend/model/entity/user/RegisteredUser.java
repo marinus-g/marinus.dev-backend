@@ -1,7 +1,7 @@
-package dev.marinus.backend.model.user;
+package dev.marinus.backend.model.entity.user;
 
-import dev.marinus.backend.model.Authenticatable;
-import dev.marinus.backend.model.role.Role;
+import dev.marinus.backend.model.entity.Authenticatable;
+import dev.marinus.backend.model.entity.role.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;

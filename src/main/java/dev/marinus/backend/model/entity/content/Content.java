@@ -1,6 +1,6 @@
-package dev.marinus.backend.model.content;
+package dev.marinus.backend.model.entity.content;
 
-import dev.marinus.backend.model.content.type.ContentType;
+import dev.marinus.backend.model.entity.content.type.ContentType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

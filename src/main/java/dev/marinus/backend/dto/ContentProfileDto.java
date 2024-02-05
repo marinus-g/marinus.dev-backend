@@ -1,7 +1,7 @@
 package dev.marinus.backend.dto;
 
-import dev.marinus.backend.model.content.profile.ContentProfileType;
-import dev.marinus.backend.model.user.GuestUser;
+import dev.marinus.backend.model.entity.content.profile.ContentProfileType;
+import dev.marinus.backend.model.entity.user.GuestUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

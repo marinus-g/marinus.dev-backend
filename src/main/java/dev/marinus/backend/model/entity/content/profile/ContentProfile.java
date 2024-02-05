@@ -1,10 +1,11 @@
-package dev.marinus.backend.model.content.profile;
+package dev.marinus.backend.model.entity.content.profile;
 
-import dev.marinus.backend.model.Authenticatable;
-import dev.marinus.backend.model.content.Content;
-import dev.marinus.backend.model.content.type.ContentType;
-import dev.marinus.backend.model.theme.Theme;
-import dev.marinus.backend.model.user.GuestUser;
+
+import dev.marinus.backend.model.entity.Authenticatable;
+import dev.marinus.backend.model.entity.content.Content;
+import dev.marinus.backend.model.entity.content.type.ContentType;
+import dev.marinus.backend.model.entity.theme.Theme;
+import dev.marinus.backend.model.entity.user.GuestUser;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package dev.marinus.backend.service;
 
 import dev.marinus.backend.dto.ThemeDto;
-import dev.marinus.backend.model.theme.Theme;
+import dev.marinus.backend.model.entity.theme.Theme;
 import dev.marinus.backend.repository.ThemeRepository;
 import org.springframework.stereotype.Service;
 

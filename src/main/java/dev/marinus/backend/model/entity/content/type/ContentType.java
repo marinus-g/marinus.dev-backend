@@ -1,6 +1,7 @@
-package dev.marinus.backend.model.content.type;
+package dev.marinus.backend.model.entity.content.type;
 
-import dev.marinus.backend.model.LineType;
+
+import dev.marinus.backend.model.entity.LineType;
 
 public interface ContentType {
 

@@ -1,6 +1,6 @@
-package dev.marinus.backend.model.role;
+package dev.marinus.backend.model.entity.role;
 
-import dev.marinus.backend.model.user.RegisteredUser;
+import dev.marinus.backend.model.entity.user.RegisteredUser;
 import jakarta.persistence.*;
 
 import java.util.HashSet;

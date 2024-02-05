@@ -1,4 +1,4 @@
-package dev.marinus.backend.model.user;
+package dev.marinus.backend.model.entity.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

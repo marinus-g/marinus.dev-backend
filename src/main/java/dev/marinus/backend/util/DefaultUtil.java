@@ -1,6 +1,7 @@
 package dev.marinus.backend.util;
 
-import dev.marinus.backend.model.content.impl.WelcomeScreenContent;
+
+import dev.marinus.backend.model.entity.content.impl.WelcomeScreenContent;
 
 public class DefaultUtil {
 

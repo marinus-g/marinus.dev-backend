@@ -1,4 +1,4 @@
-package dev.marinus.backend.model.theme;
+package dev.marinus.backend.model.entity.theme;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,8 +2,7 @@ package dev.marinus.backend.controller;
 
 import dev.marinus.backend.dto.ContentProfileDto;
 import dev.marinus.backend.dto.content.ContentDto;
-import dev.marinus.backend.model.content.Content;
-import dev.marinus.backend.model.content.profile.ContentProfile;
+import dev.marinus.backend.model.entity.content.profile.ContentProfile;
 import dev.marinus.backend.service.ContentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

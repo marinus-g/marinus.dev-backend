@@ -1,4 +1,4 @@
-package dev.marinus.backend.model.theme;
+package dev.marinus.backend.model.entity.theme;
 
 import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;

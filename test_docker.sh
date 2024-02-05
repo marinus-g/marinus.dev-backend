@@ -1,7 +1,7 @@
 #!/bin/sh
 
-JAVA_HOME="$HOME/.jdks/openjdk-21"
-PATH="$JAVA_HOME/bin:$PATH"
+#JAVA_HOME="$HOME/.jdks/openjdk-21"
+#PATH="$JAVA_HOME/bin:$PATH"
 
 # Stop Gradle daemons in the background
 ./gradlew --stop &

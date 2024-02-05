@@ -1,7 +1,7 @@
-package dev.marinus.backend.model.content.type;
+package dev.marinus.backend.model.entity.content.type;
 
-import dev.marinus.backend.model.LineType;
-import org.aspectj.apache.bcel.generic.RET;
+
+import dev.marinus.backend.model.entity.LineType;
 
 public class CommandContentType implements ContentType {
 

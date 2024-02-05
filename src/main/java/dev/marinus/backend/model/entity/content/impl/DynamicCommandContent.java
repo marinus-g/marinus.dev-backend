@@ -1,13 +1,11 @@
-package dev.marinus.backend.model.content.impl;
+package dev.marinus.backend.model.entity.content.impl;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.DependsOn;
 
 @Entity
 @Table(name = "dynamic_command_content")

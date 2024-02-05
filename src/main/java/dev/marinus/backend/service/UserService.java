@@ -1,11 +1,12 @@
 package dev.marinus.backend.service;
 
-import dev.marinus.backend.model.user.GuestUser;
-import dev.marinus.backend.model.user.RegisteredUser;
+import dev.marinus.backend.model.entity.user.GuestUser;
+import dev.marinus.backend.model.entity.user.RegisteredUser;
 import dev.marinus.backend.repository.GuestUserRepository;
 import dev.marinus.backend.repository.RegisteredUserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,16 @@ public class UserService {
     public UserService(RegisteredUserRepository registeredUserRepository, GuestUserRepository guestUserRepository) {
         this.registeredUserRepository = registeredUserRepository;
         this.guestUserRepository = guestUserRepository;
+        this.init();
+    }
+
+    private void init() {
+        if (this.registeredUserRepository.count() == 0) {
+            final RegisteredUser registeredUser = new RegisteredUser();
+            registeredUser.setUsername("root");
+            registeredUser.setPassword("password");
+            this.registeredUserRepository.save(registeredUser);
+        }
     }
 
     public GuestUser saveGuestUser(GuestUser guestUser) {
@@ -35,7 +46,14 @@ public class UserService {
         return guestUserRepository.findByUsername(username);
     }
 
-    public Optional<GuestUser> findRegisteredUserByUsername(String username) {
-        return guestUserRepository.findByUsernameEqualsIgnoreCase(username);
+    public List<RegisteredUser> findAllRegisteredUsers() {
+        return registeredUserRepository.findAll();
+    }
+
+    public List<GuestUser> findAllGuestUsers() {
+        return guestUserRepository.findAll();
+    }
+    public Optional<RegisteredUser> findRegisteredUserByUsername(String username) {
+        return registeredUserRepository.findByUsername(username);
     }
 }

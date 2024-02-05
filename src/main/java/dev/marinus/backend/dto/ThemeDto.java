@@ -1,6 +1,6 @@
 package dev.marinus.backend.dto;
 
-import dev.marinus.backend.model.theme.TerminalTheme;
+import dev.marinus.backend.model.entity.theme.TerminalTheme;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

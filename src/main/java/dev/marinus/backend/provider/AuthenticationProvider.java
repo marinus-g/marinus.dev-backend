@@ -3,7 +3,7 @@ package dev.marinus.backend.provider;
 import dev.marinus.backend.authentication.TokenAuthenticationAuthenticationToken;
 import dev.marinus.backend.dto.ContentProfileCredentialsDto;
 import dev.marinus.backend.dto.UserCredentialsDto;
-import dev.marinus.backend.model.Authenticatable;
+import dev.marinus.backend.model.entity.Authenticatable;
 import dev.marinus.backend.service.AuthenticationService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
