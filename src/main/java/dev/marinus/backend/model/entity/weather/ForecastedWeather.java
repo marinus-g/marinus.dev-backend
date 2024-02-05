@@ -1,4 +1,4 @@
-package dev.marinus.backend.model.weather;
+package dev.marinus.backend.model.entity.weather;
 
 import jakarta.persistence.*;
 import lombok.Getter;

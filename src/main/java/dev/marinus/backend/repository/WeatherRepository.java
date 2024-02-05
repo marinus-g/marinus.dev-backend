@@ -1,6 +1,6 @@
 package dev.marinus.backend.repository;
 
-import dev.marinus.backend.model.weather.Weather;
+import dev.marinus.backend.model.entity.weather.Weather;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,16 +1,11 @@
 package dev.marinus.backend.service;
 
 import dev.marinus.backend.config.BackendConfiguration;
-import dev.marinus.backend.model.weather.Weather;
+import dev.marinus.backend.model.entity.weather.Weather;
 import dev.marinus.backend.repository.WeatherRepository;
 import org.springframework.stereotype.Service;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLPeerUnverifiedException;
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.http.HttpClient;
-import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.Optional;
 
