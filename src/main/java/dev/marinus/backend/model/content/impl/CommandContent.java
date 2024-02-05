@@ -3,10 +3,14 @@ package dev.marinus.backend.model.content.impl;
 import dev.marinus.backend.model.content.Content;
 import dev.marinus.backend.model.content.type.CommandContentType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @MappedSuperclass
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)

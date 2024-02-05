@@ -57,8 +57,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/authenticate").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/v1/public/**").permitAll()
-                        .anyRequest()
-                        .authenticated());
+                        .requestMatchers("/api/v1/content/default").permitAll()
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
 

@@ -11,13 +11,9 @@ import dev.marinus.backend.model.user.User;
 import dev.marinus.backend.repository.ContentProfileRepository;
 import dev.marinus.backend.repository.RegisteredUserRepository;
 import jakarta.servlet.http.Cookie;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticatedPrincipal;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -102,7 +98,7 @@ public class AuthenticationService {
         final String hmac = tokenParts[2];
         final ContentProfile contentProfile = contentProfileRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new BadCredentialsException("Invalid token!"));
-        if (!this.calculateHmac(contentProfile).equals(hmac)) {
+        if (!hmac.equals(this.calculateHmac(contentProfile))) {
             throw new BadCredentialsException("Invalid token!");
         }
         return Optional.of(contentProfile);
@@ -117,7 +113,7 @@ public class AuthenticationService {
         final String hmac = tokenParts[3];
         final RegisteredUser user = userRepository.findById(Long.parseLong(id))
                 .filter(registeredUser -> registeredUser.getUsername().equals(username))
-                .orElseThrow(() -> new BadCredentialsException("Invalid token!"));
+                .orElseThrow(() -> new BadCredentialsException("Invalid token, content profile not found!"));
         if (!this.calculateHmac(user).equals(hmac)) {
             throw new BadCredentialsException("Invalid token!");
         }
@@ -175,6 +171,9 @@ public class AuthenticationService {
         } else {
             throw new IllegalArgumentException("Invalid authenticatable!");
         }
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setMaxAge(30_000);
         return cookie;
     }
 

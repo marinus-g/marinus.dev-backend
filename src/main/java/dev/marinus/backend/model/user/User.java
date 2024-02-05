@@ -17,6 +17,7 @@ public abstract class User {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "user_name")
     @Nonnull

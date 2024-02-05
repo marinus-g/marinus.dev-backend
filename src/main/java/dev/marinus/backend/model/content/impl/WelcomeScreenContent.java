@@ -2,9 +2,7 @@ package dev.marinus.backend.model.content.impl;
 
 import dev.marinus.backend.model.content.Content;
 import dev.marinus.backend.model.content.type.WelcomeContentType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +16,9 @@ import java.util.List;
 public class WelcomeScreenContent extends Content<WelcomeContentType> {
 
 
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "welcome_message", joinColumns = @JoinColumn(name = "content_id"))
+    @Column(name = "welcome_message", nullable = false)
     private List<String> welcomeMessage = new ArrayList<>();
 
     public WelcomeScreenContent() {

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
@@ -33,7 +34,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
             authenticatable = authenticationService.authenticate(credentialsDto);
             token = authenticationService.createToken(authenticatable);
         } else if (authentication instanceof TokenAuthenticationAuthenticationToken) {
-            final ContentProfileCredentialsDto credentialsDto = new ContentProfileCredentialsDto((String) authentication.getCredentials());
+            final ContentProfileCredentialsDto credentialsDto = new ContentProfileCredentialsDto(authentication.getCredentials().toString());
             authenticatable = authenticationService.authenticate(credentialsDto);
             token = authenticationService.createToken(authenticatable);
         } else if (authentication instanceof PreAuthenticatedAuthenticationToken) {

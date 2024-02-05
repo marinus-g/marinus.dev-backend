@@ -18,7 +18,7 @@ echo "Stopped Gradle daemons"
 ./gradlew bootJar
 
 # Build or rebuild the "web" image and force recreate the service
-docker compose build --force-rm --no-cache marinus-dev-backend
+docker compose down --rmi all
 docker compose up -d --force-recreate
 
 echo "Script executed"

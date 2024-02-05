@@ -15,10 +15,13 @@ import lombok.Setter;
 public class Content<T extends ContentType> {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "content_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     private transient T type;
 
 }
