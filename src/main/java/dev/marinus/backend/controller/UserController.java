@@ -1,10 +1,14 @@
 package dev.marinus.backend.controller;
 
+import dev.marinus.backend.dto.RegisteredUserDto;
 import dev.marinus.backend.dto.UserListRequestDto;
 import dev.marinus.backend.dto.UsernameAndIdDto;
+import dev.marinus.backend.model.entity.Authenticatable;
+import dev.marinus.backend.model.entity.user.RegisteredUser;
 import dev.marinus.backend.model.entity.user.User;
 import dev.marinus.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +27,17 @@ public class UserController {
     @GetMapping("/public/user/{username}/exists")
     public ResponseEntity<Boolean> doesUserExist(@PathVariable final String username) {
         return ResponseEntity.ok(this.userService.findRegisteredUserByUsername(username).isPresent());
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<RegisteredUserDto> getUser(@AuthenticationPrincipal final Authenticatable authenticatable) {
+        final Optional<RegisteredUserDto> user = Optional.ofNullable(authenticatable)
+                .filter(RegisteredUser.class::isInstance)
+                .map(RegisteredUser.class::cast)
+                .map(registeredUser -> new RegisteredUserDto(
+                        registeredUser.getId(),
+                        registeredUser.getUsername()));
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/user/list")

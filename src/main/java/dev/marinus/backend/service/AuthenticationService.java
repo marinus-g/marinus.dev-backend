@@ -60,6 +60,8 @@ public class AuthenticationService {
             if (userCredentials.getPassword() == null) {
                 throw new BadCredentialsException("No password provided!");
             }
+            System.out.println("userCredentials.getLogin() = " + userCredentials.getLogin());
+            System.out.println("userCredentials.getPassword() = " + userCredentials.getPassword());
             return userRepository.findByUsername(userCredentials.getLogin())
                     .filter(user -> user.getPassword().equals(userCredentials.getPassword()))
                     .map(registeredUser -> registeredUser);
