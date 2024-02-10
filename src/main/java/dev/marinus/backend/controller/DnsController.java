@@ -20,7 +20,6 @@ public class DnsController {
 
     @GetMapping( "/{domain}")
     public ResponseEntity<DnsDto> getDnsRecord(@PathVariable String domain) {
-        System.out.println("hello from getDnsRecord() in DnsController.java!");
         return dnsService.resolveDomain(domain)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

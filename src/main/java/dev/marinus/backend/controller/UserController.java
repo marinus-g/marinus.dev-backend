@@ -36,7 +36,8 @@ public class UserController {
                 .map(RegisteredUser.class::cast)
                 .map(registeredUser -> new RegisteredUserDto(
                         registeredUser.getId(),
-                        registeredUser.getUsername()));
+                        registeredUser.getUsername(),
+                        this.userService.convertToDto(registeredUser.getRoles())));
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
