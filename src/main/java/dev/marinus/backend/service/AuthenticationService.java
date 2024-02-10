@@ -175,7 +175,7 @@ public class AuthenticationService {
         }
         cookie.setPath("/");
         cookie.setDomain("45.95.52.26");
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         cookie.setMaxAge(30_000);
         return cookie;
     }
