@@ -174,8 +174,9 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid authenticatable!");
         }
         cookie.setPath("/");
-        cookie.setDomain("45.95.52.26");
-        cookie.setSecure(false);
+        cookie.setDomain("marinus.dev");
+        cookie.setSecure(true);
+
         cookie.setMaxAge(30_000);
         return cookie;
     }
