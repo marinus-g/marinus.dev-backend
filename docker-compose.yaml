@@ -2,7 +2,7 @@ services:
   marinus-dev-backend:
     build: .
     ports:
-      - "8080:8080"
+      - "${EXPOSED_MARINUS_DEV_API_PORT}‚:8080"
     volumes:
       - .:/code
       - marinus-dev-backend:/var/log
