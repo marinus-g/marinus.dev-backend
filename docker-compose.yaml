@@ -20,6 +20,8 @@ services:
           memory: 100M
   mariadb:
     image: mariadb
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: marinus-dev-backend
       MYSQL_USER: admin
