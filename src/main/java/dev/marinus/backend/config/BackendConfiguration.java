@@ -10,4 +10,10 @@ public class BackendConfiguration {
 
     @Value("${weather.api.key}")
     private String weatherApiKey;
+
+    @Value("${cookie.domain}")
+    private String cookieDomain;
+
+    @Value("${cookie.secure}")
+    private boolean cookieSecure;
 }

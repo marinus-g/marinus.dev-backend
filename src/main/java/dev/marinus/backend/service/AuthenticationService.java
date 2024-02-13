@@ -1,6 +1,7 @@
 package dev.marinus.backend.service;
 
 import dev.marinus.backend.authentication.CookieAuthenticationFilter;
+import dev.marinus.backend.config.BackendConfiguration;
 import dev.marinus.backend.dto.ContentProfileCredentialsDto;
 import dev.marinus.backend.dto.UserCredentialsDto;
 import dev.marinus.backend.model.Credentials;
@@ -32,15 +33,18 @@ public class AuthenticationService {
 
     private final RegisteredUserRepository userRepository;
     private final ContentProfileRepository contentProfileRepository;
+    private final BackendConfiguration backendConfiguration;
 
     @Value("${security.token.secret}")
     private String tokenSecret;
     @Value("${security.token.separator}")
     private String tokenSeparator;
 
-    public AuthenticationService(RegisteredUserRepository userRepository, ContentProfileRepository contentProfileRepository) {
+    public AuthenticationService(RegisteredUserRepository userRepository,
+                                 ContentProfileRepository contentProfileRepository, BackendConfiguration backendConfiguration) {
         this.userRepository = userRepository;
         this.contentProfileRepository = contentProfileRepository;
+        this.backendConfiguration = backendConfiguration;
     }
 
     public Optional<Authenticatable> authenticate(Credentials credentials) {
@@ -174,8 +178,8 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid authenticatable!");
         }
         cookie.setPath("/");
-        cookie.setDomain("marinus.dev");
-        cookie.setSecure(true);
+        cookie.setDomain(backendConfiguration.getCookieDomain());
+        cookie.setSecure(backendConfiguration.isCookieSecure());
 
         cookie.setMaxAge(30_000);
         return cookie;

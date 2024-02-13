@@ -1,7 +1,9 @@
 package dev.marinus.backend.service;
 
 import dev.marinus.backend.dto.ContentProfileDto;
+import dev.marinus.backend.dto.content.ContentCreateRequestDto;
 import dev.marinus.backend.dto.content.ContentDto;
+import dev.marinus.backend.dto.content.ContentWelcomeMessageCreateRequestDto;
 import dev.marinus.backend.dto.content.WelcomeScreenContentDto;
 import dev.marinus.backend.model.entity.content.Content;
 import dev.marinus.backend.model.entity.content.impl.WelcomeScreenContent;
@@ -96,5 +98,15 @@ public class ContentService {
             contentProfile.addContent(welcomeScreenContent);
             this.contentProfileRepository.save(contentProfile);
         });
+    }
+
+    public Optional<Content<?>> createContent(ContentCreateRequestDto createRequestDto) {
+        if (createRequestDto instanceof ContentWelcomeMessageCreateRequestDto welcomeScreenContentDto) {
+            WelcomeScreenContent welcomeScreenContent = new WelcomeScreenContent();
+            welcomeScreenContent.setName(welcomeScreenContentDto.getName());
+            welcomeScreenContent.setWelcomeMessage(welcomeScreenContentDto.getWelcomeMessage());
+            return Optional.of(contentRepository.save(welcomeScreenContent));
+        }
+        return Optional.empty();
     }
 }
