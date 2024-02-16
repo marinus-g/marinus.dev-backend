@@ -34,7 +34,7 @@ public class UserService {
         if (this.registeredUserRepository.count() == 0) {
             final RegisteredUser registeredUser = new RegisteredUser();
             registeredUser.setUsername("root");
-            registeredUser.setPassword("password");
+            registeredUser.setPassword("123");
             Role role = new Role();
             role.setName("root");
             role.addCommand("adduser");

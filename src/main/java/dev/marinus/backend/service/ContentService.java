@@ -17,6 +17,7 @@ import dev.marinus.backend.util.DefaultUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -108,5 +109,9 @@ public class ContentService {
             return Optional.of(contentRepository.save(welcomeScreenContent));
         }
         return Optional.empty();
+    }
+
+    public Collection<Content<?>> findAll() {
+        return this.contentRepository.findAll();
     }
 }

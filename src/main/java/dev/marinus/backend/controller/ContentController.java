@@ -69,9 +69,19 @@ public class ContentController {
                 .map(this.contentService::convertToDto).collect(Collectors.toSet()));
     }
 
-    @PostMapping(path = "/", consumes = "application/json")
+    @GetMapping("/fetch/all")
+    public ResponseEntity<List<ContentDto>> getAllContent(@AuthenticationPrincipal RegisteredUser user) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(this.contentService.findAll().stream()
+                .map(this.contentService::convertToDto)
+                .toList());
+    }
+    @PostMapping(path = "/")
     public ResponseEntity<ContentDto> addContent(@AuthenticationPrincipal RegisteredUser user,
                                                  @RequestBody ContentCreateRequestDto createRequestDto) {
+        System.out.println("in method");
         if (Optional.ofNullable(user).isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
