@@ -91,4 +91,16 @@ public class ContentController {
                 .orElse(ResponseEntity.badRequest().build());
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ContentDto> updateContent(@AuthenticationPrincipal RegisteredUser user,
+                                                    @RequestBody ContentDto dto) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return this.contentService.updateContent(dto)
+                .map(this.contentService::convertToDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
+    }
 }

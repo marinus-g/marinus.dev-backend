@@ -17,6 +17,7 @@ import dev.marinus.backend.util.DefaultUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.FileChannel;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -113,5 +114,18 @@ public class ContentService {
 
     public Collection<Content<?>> findAll() {
         return this.contentRepository.findAll();
+    }
+
+    public Optional<Content<?>> updateContent(ContentDto dto) {
+        if (dto instanceof WelcomeScreenContentDto welcomeScreenContentDto) {
+            return this.contentRepository.findById(welcomeScreenContentDto.getId())
+                    .map(content -> (WelcomeScreenContent) content)
+                    .map(welcomeScreenContent -> {
+                        welcomeScreenContent.setName(welcomeScreenContentDto.getName());
+                        welcomeScreenContent.setWelcomeMessage(welcomeScreenContentDto.getWelcomeMessage());
+                        return this.contentRepository.save(welcomeScreenContent);
+                    });
+        }
+        return Optional.empty();
     }
 }
