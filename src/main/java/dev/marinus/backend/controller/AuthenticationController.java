@@ -56,7 +56,6 @@ public class AuthenticationController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not logged in");
         }
-        System.out.println("logging out user " + user.getUsername());
         this.authenticationService.logout();
         return ResponseEntity.ok().build();
     }
