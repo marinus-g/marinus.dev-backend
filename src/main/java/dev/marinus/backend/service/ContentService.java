@@ -18,7 +18,6 @@ import dev.marinus.backend.util.DefaultUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.nio.channels.FileChannel;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -43,12 +42,14 @@ public class ContentService {
     }
 
     public Optional<ContentProfile> createContentProfile(ContentProfileCreateDto dto) {
+        final Optional<GuestUser> guestUser = Optional.ofNullable(dto.getGuestUser())
+                .map(this.userService::createOrFindGuestUser).flatMap(optional -> optional);
         return this.createContentProfile(new ContentProfileDto(
-                -1,
-                dto.getName(),
-                dto.getProfileType(),
                 null,
-                dto.getGuestUser()
+                dto.getName(),
+                dto.getContentProfileType(),
+                null,
+                guestUser.orElse(null)
         ));
     }
 
@@ -62,6 +63,10 @@ public class ContentService {
             contentProfile.setTokenId(UUID.randomUUID());
         } while (contentProfileRepository.findByTokenId(contentProfile.getTokenId()).isPresent());
         return Optional.of(contentProfileRepository.save(contentProfile));
+    }
+
+    public boolean existsByName(String name) {
+        return contentProfileRepository.existsByName(name);
     }
 
     public Optional<ContentProfile> findContentProfileByUuid(UUID tokenId) {
@@ -98,7 +103,7 @@ public class ContentService {
     private void init() {
         ContentProfileDto contentProfileDto = new ContentProfileDto();
         contentProfileDto.setName("Default");
-        contentProfileDto.setContentProfileType(ContentProfileType.COMPANY);
+        contentProfileDto.setContentProfileType(ContentProfileType.GUEST);
         GuestUser guestUser = new GuestUser(true);
         guestUser.setUsername("guest");
         guestUser = this.userService.saveGuestUser(guestUser);

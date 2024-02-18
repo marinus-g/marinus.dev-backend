@@ -1,5 +1,6 @@
 package dev.marinus.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.marinus.backend.model.entity.content.profile.ContentProfileType;
 import dev.marinus.backend.model.entity.user.GuestUser;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class ContentProfileDto {
     private ThemeDto themeDto;
     private @Nullable GuestUser guestUser;
 
-    public ContentProfileDto(@Nullable long id, String name, ContentProfileType contentProfileType,
+    public ContentProfileDto(@Nullable Long id, String name, ContentProfileType contentProfileType,
                              ThemeDto themeDto, @Nullable GuestUser guestUser) {
         this.id = id;
         this.name = name;

@@ -12,4 +12,8 @@ public interface ContentProfileRepository extends JpaRepository<ContentProfile, 
 
     Optional<ContentProfile> findByTokenId(UUID tokenId);
 
+    Optional<ContentProfile> findByName(String name);
+
+    boolean existsByName(String name);
+
 }

@@ -7,10 +7,14 @@ import dev.marinus.backend.dto.content.ContentDto;
 import dev.marinus.backend.model.entity.content.profile.ContentProfile;
 import dev.marinus.backend.model.entity.user.RegisteredUser;
 import dev.marinus.backend.service.ContentService;
+import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,9 +53,18 @@ public class ContentController {
         if (Optional.ofNullable(user).isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
+        if (this.contentService.existsByName(dto.getName())) {
+            return ResponseEntity.ok().build();
+        }
         return this.contentService.createContentProfile(dto)
                 .map(this.contentService::convertToDto)
-                .map(ResponseEntity::ok)
+                .map(contentProfileDto -> {
+                    try {
+                        return ResponseEntity.created(new URI("https/marinus.dev")).body(contentProfileDto);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .orElse(ResponseEntity.badRequest().build());
     }
 

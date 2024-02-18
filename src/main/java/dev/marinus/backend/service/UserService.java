@@ -1,5 +1,6 @@
 package dev.marinus.backend.service;
 
+import dev.marinus.backend.dto.GuestUserDto;
 import dev.marinus.backend.dto.RoleDto;
 import dev.marinus.backend.model.entity.role.Role;
 import dev.marinus.backend.model.entity.user.GuestUser;
@@ -90,5 +91,17 @@ public class UserService {
 
     public RoleDto convertToDto(Role role) {
         return new RoleDto(role.getId(), role.getName(), new ArrayList<>(role.getCommands()));
+    }
+
+    public Optional<GuestUser> createOrFindGuestUser(GuestUserDto guestUserDto) {
+        return Optional.ofNullable(guestUserDto)
+                .map(GuestUserDto::getUsername)
+                .flatMap(this::findGuestUserByUsername)
+                .or(() -> Optional.ofNullable(guestUserDto)
+                        .map(guestUser -> new GuestUser(guestUser.isSaveInLocalStorage()))
+                        .map(guestUser -> {
+                            guestUser.setUsername(guestUserDto.getUsername());
+                            return this.saveGuestUser(guestUser);
+                        }));
     }
 }
