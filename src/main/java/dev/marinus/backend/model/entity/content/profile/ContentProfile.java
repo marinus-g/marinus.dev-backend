@@ -34,10 +34,12 @@ public class ContentProfile implements Authenticatable {
     @NonNull
     private UUID tokenId;
 
+    @Column(name = "theme_id")
     @ManyToOne
     @Nullable
     private Theme theme;
 
+    @Column(name = "user_id")
     @ManyToOne
     @Nullable
     private GuestUser user;

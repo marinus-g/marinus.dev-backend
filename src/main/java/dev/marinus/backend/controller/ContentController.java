@@ -1,5 +1,6 @@
 package dev.marinus.backend.controller;
 
+import dev.marinus.backend.dto.ContentProfileCreateDto;
 import dev.marinus.backend.dto.ContentProfileDto;
 import dev.marinus.backend.dto.content.ContentCreateRequestDto;
 import dev.marinus.backend.dto.content.ContentDto;
@@ -28,6 +29,37 @@ public class ContentController {
     public ResponseEntity<ContentProfileDto> getContentProfile(@AuthenticationPrincipal ContentProfile contentProfile) {
         return Optional.ofNullable(contentProfile)
                 .map(contentService::convertToDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/profile/all")
+    public ResponseEntity<List<ContentProfileDto>> getAllContentProfiles(@AuthenticationPrincipal RegisteredUser user) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(this.contentService.findAllContentProfiles().stream()
+                .map(this.contentService::convertToDto)
+                .toList());
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity<ContentProfileDto> createContentProfile(@AuthenticationPrincipal RegisteredUser user,
+                                                                 @RequestBody ContentProfileCreateDto dto) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return this.contentService.createContentProfile(dto)
+                .map(this.contentService::convertToDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
+    }
+
+    @GetMapping("/fetch/{profile}")
+    public ResponseEntity<List<ContentDto>> getContentForProfile(@PathVariable ContentProfile profile) {
+        return Optional.ofNullable(profile)
+                .map(ContentProfile::getContent)
+                .map(contents -> contents.stream().map(contentService::convertToDto).toList())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

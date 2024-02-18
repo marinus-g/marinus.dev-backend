@@ -1,5 +1,6 @@
 package dev.marinus.backend.service;
 
+import dev.marinus.backend.dto.ContentProfileCreateDto;
 import dev.marinus.backend.dto.ContentProfileDto;
 import dev.marinus.backend.dto.content.ContentCreateRequestDto;
 import dev.marinus.backend.dto.content.ContentDto;
@@ -41,6 +42,15 @@ public class ContentService {
         this.init();
     }
 
+    public Optional<ContentProfile> createContentProfile(ContentProfileCreateDto dto) {
+        return this.createContentProfile(new ContentProfileDto(
+                -1,
+                dto.getName(),
+                dto.getProfileType(),
+                null,
+                dto.getGuestUser()
+        ));
+    }
 
     public Optional<ContentProfile> createContentProfile(ContentProfileDto dto) {
         ContentProfile contentProfile = new ContentProfile();
@@ -127,5 +137,9 @@ public class ContentService {
                     });
         }
         return Optional.empty();
+    }
+
+    public Collection<ContentProfile> findAllContentProfiles() {
+        return this.contentProfileRepository.findAll();
     }
 }
