@@ -34,12 +34,10 @@ public class ContentProfile implements Authenticatable {
     @NonNull
     private UUID tokenId;
 
-    @JoinColumn(name = "theme_id")
     @ManyToOne
     @Nullable
     private Theme theme;
 
-    @JoinColumn(name = "user_id")
     @ManyToOne
     @Nullable
     private GuestUser user;
@@ -57,7 +55,7 @@ public class ContentProfile implements Authenticatable {
     @Column(name = "is_deletable")
     private boolean isDeletable;
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Content<? extends ContentType>> content = new HashSet<>();
 
     public void addContent(Content<? extends ContentType> content) {

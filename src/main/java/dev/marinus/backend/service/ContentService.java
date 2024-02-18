@@ -111,6 +111,7 @@ public class ContentService {
         this.createContentProfile(contentProfileDto);
         this.contentProfileRepository.findById(1L).ifPresent(contentProfile -> {
             WelcomeScreenContent welcomeScreenContent = DefaultUtil.createDefaultWelcomeScreenContent();
+            welcomeScreenContent.getProfiles().add(contentProfile);
             welcomeScreenContent = this.contentRepository.save(welcomeScreenContent);
             contentProfile.addContent(welcomeScreenContent);
             this.contentProfileRepository.save(contentProfile);
@@ -146,5 +147,10 @@ public class ContentService {
 
     public Collection<ContentProfile> findAllContentProfiles() {
         return this.contentProfileRepository.findAll();
+    }
+
+    public ContentProfile addContentToProfile(ContentProfile profile, Content<?> content) {
+        profile.addContent(content);
+        return this.contentProfileRepository.save(profile);
     }
 }

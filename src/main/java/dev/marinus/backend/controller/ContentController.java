@@ -4,6 +4,7 @@ import dev.marinus.backend.dto.ContentProfileCreateDto;
 import dev.marinus.backend.dto.ContentProfileDto;
 import dev.marinus.backend.dto.content.ContentCreateRequestDto;
 import dev.marinus.backend.dto.content.ContentDto;
+import dev.marinus.backend.model.entity.content.Content;
 import dev.marinus.backend.model.entity.content.profile.ContentProfile;
 import dev.marinus.backend.model.entity.user.RegisteredUser;
 import dev.marinus.backend.service.ContentService;
@@ -147,5 +148,26 @@ public class ContentController {
                 .map(this.contentService::convertToDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.badRequest().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteContent(@AuthenticationPrincipal RegisteredUser user,
+                                          @PathVariable Long id) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @PostMapping("/profile/{profile}/content/{content}")
+    public ResponseEntity<?> addContentToProfile(@AuthenticationPrincipal RegisteredUser user,
+                                                 @PathVariable ContentProfile profile,
+                                                 @PathVariable Content<?> content) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (Optional.ofNullable(profile).isEmpty() || Optional.ofNullable(content).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+       return ResponseEntity
+               .ok(this.contentService.convertToDto(this.contentService.addContentToProfile(profile, content)));
     }
 }
