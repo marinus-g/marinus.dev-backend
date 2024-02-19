@@ -162,6 +162,22 @@ public class ContentController {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/profile/{profile}")
+    public ResponseEntity<?> deleteContentProfile(@AuthenticationPrincipal RegisteredUser user,
+                                                 @PathVariable ContentProfile profile) {
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (Optional.ofNullable(profile).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (this.contentService.deleteContentProfile(profile)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/profile/{profile}/content/{content}")
     public ResponseEntity<?> addContentToProfile(@AuthenticationPrincipal RegisteredUser user,
                                                  @PathVariable ContentProfile profile,

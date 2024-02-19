@@ -161,4 +161,12 @@ public class ContentService {
         this.contentRepository.deleteById(id);
         return true;
     }
+
+    public boolean deleteContentProfile(ContentProfile profile) {
+        if (!this.contentProfileRepository.existsById(profile.getId())) {
+            return false;
+        }
+        this.contentProfileRepository.delete(profile);
+        return true;
+    }
 }
