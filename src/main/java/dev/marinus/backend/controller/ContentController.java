@@ -138,7 +138,7 @@ public class ContentController {
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("")
     public ResponseEntity<ContentDto> updateContent(@AuthenticationPrincipal RegisteredUser user,
                                                     @RequestBody ContentDto dto) {
         if (Optional.ofNullable(user).isEmpty()) {
