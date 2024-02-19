@@ -153,4 +153,12 @@ public class ContentService {
         profile.addContent(content);
         return this.contentProfileRepository.save(profile);
     }
+
+    public boolean deleteContent(Long id) {
+        if (!this.contentRepository.existsById(id)) {
+            return false;
+        }
+        this.contentRepository.deleteById(id);
+        return true;
+    }
 }

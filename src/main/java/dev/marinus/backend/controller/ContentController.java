@@ -153,7 +153,13 @@ public class ContentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteContent(@AuthenticationPrincipal RegisteredUser user,
                                           @PathVariable Long id) {
-        throw new RuntimeException("Not implemented");
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (this.contentService.deleteContent(id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/profile/{profile}/content/{content}")
