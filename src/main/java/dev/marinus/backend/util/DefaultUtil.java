@@ -8,6 +8,7 @@ public class DefaultUtil {
     public static WelcomeScreenContent createDefaultWelcomeScreenContent() {
         WelcomeScreenContent welcomeScreenContent = new WelcomeScreenContent();
         welcomeScreenContent.setName("Default Welcome Screen");
+        welcomeScreenContent.setWeight(0);
         welcomeScreenContent.getWelcomeMessage().add("<span style='color: " + "{[{terminal#highlightColor}]}" + ";'><span style='text-decoration-line: underline; color: " + "{[{terminal#warningColor}]}" + "'>Hello World!</span> I´m Marinus.</span>");
         welcomeScreenContent.getWelcomeMessage().add("<span style='color: " + "{[{terminal#informationColor}]}" + "; line-height: 0.4'> > Mit 16 Jahren habe ich meine Leidenschaft für das Programmieren entdeckt.</span>");
         welcomeScreenContent.getWelcomeMessage().add("<span style='color: " + "{[{terminal#informationColor}]}" + "; line-height: 0.4'> > Über 8 Jahre Erfahrung in Java.</span>");

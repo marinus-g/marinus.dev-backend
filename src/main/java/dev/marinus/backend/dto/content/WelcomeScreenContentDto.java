@@ -17,9 +17,12 @@ import java.util.List;
 public class WelcomeScreenContentDto extends ContentDto {
 
     private List<String> welcomeMessage = new ArrayList<>();
+    private int weight = 0;
 
-    public WelcomeScreenContentDto(Long id, String name, List<String> welcomeMessage) {
+
+    public WelcomeScreenContentDto(Long id, String name, List<String> welcomeMessage, int weight) {
         super(id, name);
         this.welcomeMessage = welcomeMessage;
+        this.weight = weight;
     }
 }

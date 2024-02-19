@@ -15,6 +15,7 @@ import dev.marinus.backend.model.entity.user.GuestUser;
 import dev.marinus.backend.repository.ContentProfileRepository;
 import dev.marinus.backend.repository.ContentRepository;
 import dev.marinus.backend.util.DefaultUtil;
+import io.micrometer.observation.ObservationFilter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -94,7 +95,8 @@ public class ContentService {
             return new WelcomeScreenContentDto(
                     content.getId(),
                     content.getName(),
-                    welcomeScreenContent.getWelcomeMessage()
+                    welcomeScreenContent.getWelcomeMessage(),
+                    welcomeScreenContent.getWeight()
             );
         }
         throw new IllegalArgumentException("Unknown content type");
@@ -122,6 +124,7 @@ public class ContentService {
         if (createRequestDto instanceof ContentWelcomeMessageCreateRequestDto welcomeScreenContentDto) {
             WelcomeScreenContent welcomeScreenContent = new WelcomeScreenContent();
             welcomeScreenContent.setName(welcomeScreenContentDto.getName());
+            welcomeScreenContent.setWeight(welcomeScreenContentDto.getWeight());
             welcomeScreenContent.setWelcomeMessage(welcomeScreenContentDto.getWelcomeMessage());
             return Optional.of(contentRepository.save(welcomeScreenContent));
         }
@@ -138,6 +141,7 @@ public class ContentService {
                     .map(content -> (WelcomeScreenContent) content)
                     .map(welcomeScreenContent -> {
                         welcomeScreenContent.setName(welcomeScreenContentDto.getName());
+                        welcomeScreenContent.setWeight(welcomeScreenContentDto.getWeight());
                         welcomeScreenContent.setWelcomeMessage(welcomeScreenContentDto.getWelcomeMessage());
                         return this.contentRepository.save(welcomeScreenContent);
                     });
@@ -150,7 +154,15 @@ public class ContentService {
     }
 
     public ContentProfile addContentToProfile(ContentProfile profile, Content<?> content) {
+        if (profile.getContent().contains(content)) {
+            return profile;
+        }
         profile.addContent(content);
+        return this.contentProfileRepository.save(profile);
+    }
+
+    public ContentProfile removeContentFromProfile(ContentProfile profile, Content<?> content) {
+        profile.removeContent(content);
         return this.contentProfileRepository.save(profile);
     }
 
@@ -168,5 +180,17 @@ public class ContentService {
         }
         this.contentProfileRepository.delete(profile);
         return true;
+    }
+
+    public Optional<ContentProfile> updateContentProfile(ContentProfileDto dto) {
+        return Optional.ofNullable(dto.getId()).map(this.contentProfileRepository::findById)
+                .flatMap(contentProfile -> contentProfile)
+                .map(contentProfile -> {
+                    contentProfile.setName(dto.getName());
+                    contentProfile.setContentProfileType(dto.getContentProfileType());
+                    contentProfile.setUser(dto.getGuestUser());
+                    contentProfile.setTheme(Optional.ofNullable(dto.getThemeDto()).map(themeService::convertToEntity).orElse(null));
+                    return this.contentProfileRepository.save(contentProfile);
+                });
     }
 }

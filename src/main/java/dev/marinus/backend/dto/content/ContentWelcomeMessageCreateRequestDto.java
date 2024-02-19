@@ -16,5 +16,6 @@ import java.util.List;
 public class ContentWelcomeMessageCreateRequestDto extends ContentCreateRequestDto {
 
     private List<String> welcomeMessage;
+    private int weight;
 
 }

@@ -20,6 +20,8 @@ public class WelcomeScreenContent extends Content<WelcomeContentType> {
     @CollectionTable(name = "welcome_message", joinColumns = @JoinColumn(name = "content_id"))
     @Column(name = "welcome_message", nullable = false)
     private List<String> welcomeMessage = new ArrayList<>();
+    @Column(name = "weight")
+    private int weight;
 
     public WelcomeScreenContent() {
         super();
