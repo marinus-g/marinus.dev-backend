@@ -69,6 +69,15 @@ public class ContentController {
                 .orElse(ResponseEntity.badRequest().build());
     }
 
+    @GetMapping(path = "/profile/{profile}/token", produces = "text/plain")
+    public ResponseEntity<String> getTokenForProfile(@PathVariable ContentProfile profile) {
+        return Optional.ofNullable(profile)
+                .map(ContentProfile::getTokenId)
+                .map(UUID::toString)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/fetch/{profile}")
     public ResponseEntity<List<ContentDto>> getContentForProfile(@PathVariable ContentProfile profile) {
         return Optional.ofNullable(profile)

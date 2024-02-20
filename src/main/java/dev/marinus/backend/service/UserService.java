@@ -1,5 +1,6 @@
 package dev.marinus.backend.service;
 
+import dev.marinus.backend.config.PasswordConfig;
 import dev.marinus.backend.dto.GuestUserDto;
 import dev.marinus.backend.dto.RoleDto;
 import dev.marinus.backend.model.entity.role.Role;
@@ -8,6 +9,7 @@ import dev.marinus.backend.model.entity.user.RegisteredUser;
 import dev.marinus.backend.repository.GuestUserRepository;
 import dev.marinus.backend.repository.RegisteredUserRepository;
 import dev.marinus.backend.repository.RoleRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,20 +24,27 @@ public class UserService {
     private final RegisteredUserRepository registeredUserRepository;
     private final RoleRepository roleRepository;
     private final GuestUserRepository guestUserRepository;
+    private final PasswordConfig passwordConfig;
+
+    @Value("${security.default.root.password}")
+    private String defaultRootPassword;
 
     public UserService(RegisteredUserRepository registeredUserRepository, GuestUserRepository guestUserRepository,
-                       final RoleRepository roleRepository) {
+                       final RoleRepository roleRepository, PasswordConfig passwordConfig) {
         this.registeredUserRepository = registeredUserRepository;
         this.guestUserRepository = guestUserRepository;
         this.roleRepository = roleRepository;
-        this.init();
+        this.passwordConfig = passwordConfig;
     }
 
-    private void init() {
+
+    public void init() {
         if (this.registeredUserRepository.count() == 0) {
+            System.out.println("No users found, creating root user!");
+            System.out.println("password: " + this.defaultRootPassword);
             final RegisteredUser registeredUser = new RegisteredUser();
             registeredUser.setUsername("root");
-            registeredUser.setPassword("123");
+            registeredUser.setPassword(passwordConfig.passwordEncoder().encode(this.defaultRootPassword));
             Role role = new Role();
             role.setName("root");
             role.addCommand("adduser");
@@ -54,6 +63,7 @@ public class UserService {
             role = this.roleRepository.save(role);
             registeredUser.addRole(role);
             this.registeredUserRepository.save(registeredUser);
+            System.out.println("Created root user!");
         }
     }
 

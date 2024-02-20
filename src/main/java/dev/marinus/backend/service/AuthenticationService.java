@@ -2,6 +2,7 @@ package dev.marinus.backend.service;
 
 import dev.marinus.backend.authentication.CookieAuthenticationFilter;
 import dev.marinus.backend.config.BackendConfiguration;
+import dev.marinus.backend.config.PasswordConfig;
 import dev.marinus.backend.dto.ContentProfileCredentialsDto;
 import dev.marinus.backend.dto.UserCredentialsDto;
 import dev.marinus.backend.model.Credentials;
@@ -34,17 +35,19 @@ public class AuthenticationService {
     private final RegisteredUserRepository userRepository;
     private final ContentProfileRepository contentProfileRepository;
     private final BackendConfiguration backendConfiguration;
+    private final PasswordConfig passwordConfig;
 
     @Value("${security.token.secret}")
     private String tokenSecret;
     @Value("${security.token.separator}")
     private String tokenSeparator;
 
-    public AuthenticationService(RegisteredUserRepository userRepository,
+    public AuthenticationService(RegisteredUserRepository userRepository, PasswordConfig passwordConfig,
                                  ContentProfileRepository contentProfileRepository, BackendConfiguration backendConfiguration) {
         this.userRepository = userRepository;
         this.contentProfileRepository = contentProfileRepository;
         this.backendConfiguration = backendConfiguration;
+        this.passwordConfig = passwordConfig;
     }
 
     public Optional<Authenticatable> authenticate(Credentials credentials) {
@@ -64,10 +67,9 @@ public class AuthenticationService {
             if (userCredentials.getPassword() == null) {
                 throw new BadCredentialsException("No password provided!");
             }
-            System.out.println("userCredentials.getLogin() = " + userCredentials.getLogin());
-            System.out.println("userCredentials.getPassword() = " + userCredentials.getPassword());
             return userRepository.findByUsername(userCredentials.getLogin())
-                    .filter(user -> user.getPassword().equals(userCredentials.getPassword()))
+                    .filter(user -> passwordConfig.passwordEncoder()
+                            .matches(userCredentials.getPassword(), user.getPassword()))
                     .map(registeredUser -> registeredUser);
         } else {
             throw new BadCredentialsException("Invalid credentials!");
