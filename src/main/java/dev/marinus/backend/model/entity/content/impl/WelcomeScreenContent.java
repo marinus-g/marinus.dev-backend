@@ -18,7 +18,7 @@ public class WelcomeScreenContent extends Content<WelcomeContentType> {
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "welcome_message", joinColumns = @JoinColumn(name = "content_id"))
-    @Column(name = "welcome_message", nullable = false)
+    @Column(name = "welcome_message", nullable = false, columnDefinition = "LONGTEXT")
     private List<String> welcomeMessage = new ArrayList<>();
     @Column(name = "weight")
     private int weight;
