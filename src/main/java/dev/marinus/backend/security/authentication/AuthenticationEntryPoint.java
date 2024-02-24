@@ -1,4 +1,4 @@
-package dev.marinus.backend.authentication;
+package dev.marinus.backend.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

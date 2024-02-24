@@ -1,11 +1,11 @@
-package dev.marinus.backend.authentication;
+package dev.marinus.backend.security.authentication;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.marinus.backend.dto.ContentProfileCredentialsDto;
 import dev.marinus.backend.dto.UserCredentialsDto;
 import dev.marinus.backend.model.Credentials;
-import dev.marinus.backend.provider.AuthenticationProvider;
+import dev.marinus.backend.security.provider.AuthenticationProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,9 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 public class CredentialsAuthenticationFilter extends OncePerRequestFilter {
 

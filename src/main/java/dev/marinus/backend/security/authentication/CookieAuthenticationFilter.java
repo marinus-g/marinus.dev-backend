@@ -1,6 +1,6 @@
-package dev.marinus.backend.authentication;
+package dev.marinus.backend.security.authentication;
 
-import dev.marinus.backend.provider.AuthenticationProvider;
+import dev.marinus.backend.security.provider.AuthenticationProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -29,7 +29,6 @@ public class CookieAuthenticationFilter extends OncePerRequestFilter {
                 .filter(cookie -> COOKIE_NAME.equals(cookie.getName()))
                 .findFirst();
 
-        authCookie.ifPresent(cookie -> System.out.println("cookie: " + cookie.getValue()));
         authCookie.ifPresent(cookie -> SecurityContextHolder.getContext()
                 .setAuthentication(authenticationProvider.authenticate(new PreAuthenticatedAuthenticationToken(cookie.getValue(), null))));
         filterChain.doFilter(request, response);

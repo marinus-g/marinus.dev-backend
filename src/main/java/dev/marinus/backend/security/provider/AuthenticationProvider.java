@@ -1,6 +1,6 @@
-package dev.marinus.backend.provider;
+package dev.marinus.backend.security.provider;
 
-import dev.marinus.backend.authentication.TokenAuthenticationAuthenticationToken;
+import dev.marinus.backend.security.authentication.TokenAuthenticationAuthenticationToken;
 import dev.marinus.backend.dto.ContentProfileCredentialsDto;
 import dev.marinus.backend.dto.UserCredentialsDto;
 import dev.marinus.backend.model.entity.Authenticatable;

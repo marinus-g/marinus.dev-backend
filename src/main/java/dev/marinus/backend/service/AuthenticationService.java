@@ -1,6 +1,6 @@
 package dev.marinus.backend.service;
 
-import dev.marinus.backend.authentication.CookieAuthenticationFilter;
+import dev.marinus.backend.security.authentication.CookieAuthenticationFilter;
 import dev.marinus.backend.config.BackendConfiguration;
 import dev.marinus.backend.config.PasswordConfig;
 import dev.marinus.backend.dto.ContentProfileCredentialsDto;

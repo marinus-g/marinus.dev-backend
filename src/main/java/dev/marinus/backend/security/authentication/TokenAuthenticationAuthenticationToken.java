@@ -1,4 +1,4 @@
-package dev.marinus.backend.authentication;
+package dev.marinus.backend.security.authentication;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import java.util.UUID;

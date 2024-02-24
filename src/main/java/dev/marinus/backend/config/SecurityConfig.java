@@ -1,9 +1,9 @@
 package dev.marinus.backend.config;
 
-import dev.marinus.backend.authentication.AuthenticationEntryPoint;
-import dev.marinus.backend.authentication.CookieAuthenticationFilter;
-import dev.marinus.backend.authentication.CredentialsAuthenticationFilter;
-import dev.marinus.backend.provider.AuthenticationProvider;
+import dev.marinus.backend.security.authentication.AuthenticationEntryPoint;
+import dev.marinus.backend.security.authentication.CookieAuthenticationFilter;
+import dev.marinus.backend.security.authentication.CredentialsAuthenticationFilter;
+import dev.marinus.backend.security.provider.AuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
