@@ -6,6 +6,7 @@ services:
     volumes:
       - .:/code
       - marinus-dev-backend:/var/log
+      - ./pictures:/pictures
     depends_on:
       - mariadb
     env_file:
