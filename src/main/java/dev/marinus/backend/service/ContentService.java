@@ -103,12 +103,19 @@ public class ContentService {
     }
 
     private void init() {
+        if (this.contentProfileRepository.existsById(1L)) {
+            return;
+        }
         ContentProfileDto contentProfileDto = new ContentProfileDto();
         contentProfileDto.setName("Default");
+        contentProfileDto.setId(1L);
         contentProfileDto.setContentProfileType(ContentProfileType.GUEST);
-        GuestUser guestUser = new GuestUser(true);
-        guestUser.setUsername("guest");
-        guestUser = this.userService.saveGuestUser(guestUser);
+        GuestUser guestUser = this.userService.findGuestUserByUsername("guest").orElseGet(() -> {
+            GuestUser newUser = new GuestUser();
+            newUser.setUsername("guest");
+            newUser = this.userService.saveGuestUser(newUser);
+            return newUser;
+        });
         contentProfileDto.setGuestUser(guestUser);
         this.createContentProfile(contentProfileDto);
         this.contentProfileRepository.findById(1L).ifPresent(contentProfile -> {
