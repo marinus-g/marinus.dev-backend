@@ -16,6 +16,6 @@ import java.util.List;
 @Setter
 public class ProjectDescriptionDto {
 
-    private List<ContentBlock> contentBlocks;
+    private List<ContentBlockDto> contentBlocks;
 
 }

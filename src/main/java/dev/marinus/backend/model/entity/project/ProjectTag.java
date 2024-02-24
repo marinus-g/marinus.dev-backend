@@ -26,4 +26,8 @@ public class ProjectTag {
     @ManyToMany
     private List<Project> projects;
 
+    public ProjectTag(String tag) {
+        this.tag = tag;
+    }
+
 }

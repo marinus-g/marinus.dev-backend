@@ -200,4 +200,8 @@ public class ContentService {
                     return this.contentProfileRepository.save(contentProfile);
                 });
     }
+
+    public Optional<ContentProfile> findById(Long contentProfileId) {
+        return this.contentProfileRepository.findById(contentProfileId);
+    }
 }

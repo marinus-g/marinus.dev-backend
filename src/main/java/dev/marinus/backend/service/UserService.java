@@ -60,10 +60,16 @@ public class UserService {
             role.addCommand("usermod");
             role.addCommand("users");
             role.addCommand("roles");
+            role.addCommand("projects");
             role = this.roleRepository.save(role);
             registeredUser.addRole(role);
             this.registeredUserRepository.save(registeredUser);
             System.out.println("Created root user!");
+        } else if (this.roleRepository.findById(1L).isPresent()) {
+            this.roleRepository.findById(1L).ifPresent(role -> {
+                role.addCommand("projects");
+                this.roleRepository.save(role);
+            });
         }
     }
 

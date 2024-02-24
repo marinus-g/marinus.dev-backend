@@ -29,7 +29,7 @@ public class ProjectDto {
     private PictureBlockDto thumbnail;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private List<ContentProfile> contentProfiles;
+    private List<Long> contentProfiles;
 
     private List<String> tags;
 
