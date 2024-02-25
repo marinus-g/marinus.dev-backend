@@ -23,6 +23,12 @@ public class PictureService {
         final int length = picture.getOriginalFilename().split("\\.").length;
         final String extension = length > 1 ? picture.getOriginalFilename().split("\\.")[length - 1] : "png";
         final File file = new File("pictures/" + pictureUid + "." + extension);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         Files.write(file.toPath(), picture.getBytes());
     }
 
