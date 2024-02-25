@@ -2,13 +2,15 @@ package dev.marinus.backend.controller;
 
 import dev.marinus.backend.security.annotation.RequiresCommand;
 import dev.marinus.backend.service.PictureService;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/picture")
+@RequestMapping("/api/v1/picture")
 
 public class PictureController {
 
@@ -22,14 +24,15 @@ public class PictureController {
     public ResponseEntity<byte[]> getPicture(@PathVariable String id) {
         return this.pictureService.getPicture(id).map(picture -> {
             final HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.valueOf(this.pictureService.determineContentType(picture)));
+            headers.setContentType(MediaType.valueOf("image/jpg"));
             return ResponseEntity.ok().headers(headers).body(picture);
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    @SneakyThrows
     @PostMapping(path = "/")
     @RequiresCommand("projects")
-    public ResponseEntity<String> createPicture(@RequestBody byte[] picture) {
+    public ResponseEntity<String> createPicture(@RequestBody @RequestParam("file") MultipartFile picture) {
         final String pictureUid = this.pictureService.generatePictureUid();
         this.pictureService.createPicture(pictureUid, picture);
         return ResponseEntity.ok(pictureUid);

@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
 public class CommandContent extends Content<CommandContentType> {
     @Column(name = "command_name")
     private String command;

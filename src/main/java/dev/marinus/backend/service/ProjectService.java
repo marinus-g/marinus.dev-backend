@@ -1,6 +1,7 @@
 package dev.marinus.backend.service;
 
 import dev.marinus.backend.dto.project.*;
+import dev.marinus.backend.model.entity.Authenticatable;
 import dev.marinus.backend.model.entity.content.profile.ContentProfile;
 import dev.marinus.backend.model.entity.project.*;
 import dev.marinus.backend.repository.ProjectRepository;
@@ -8,6 +9,7 @@ import dev.marinus.backend.repository.ProjectTagRepository;
 import io.micrometer.observation.ObservationFilter;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,16 +36,38 @@ public class ProjectService {
             return Optional.empty();
         }
         Project project = new Project();
-        project.setName(dto.getName());
+        applyDtoToProject(dto, project);
         return Optional.of(toDto(projectRepository.save(project)));
+    }
+
+    private void applyDtoToProject(ProjectDto dto, Project project) {
+        project.setName(dto.getName());
+        project.setLink(dto.getLink());
+        project.setDifficulty(dto.getDifficulty());
+        project.setTags(dto.getTags() == null ? List.of() : dto.getTags()
+                .stream()
+                .map(tag -> this.projectTagRepository.findByTagIgnoreCase(tag).orElse(null))
+                .filter(Objects::nonNull)
+                .toList()
+        );
+        project.setContentProfiles(dto.getContentProfiles() == null ? List.of() : dto.getContentProfiles()
+                .stream()
+                .map(contentProfileId -> this.contentService.findById(contentProfileId).orElse(null))
+                .filter(Objects::nonNull)
+                .toList());
+        project.setProjectDescription(new ProjectDescription(dto.getProjectDescription().getMarkdown()));
+        project.setThumbnailReference(dto.getThumbnailReference());
     }
 
     public List<Project> findAll() {
         return projectRepository.findAll();
     }
 
-    public List<Project> findAllByContentProfilesContaining(ContentProfile contentProfile) {
-        return projectRepository.findAllByContentProfilesContaining(contentProfile);
+    public List<Project> findAllByContentProfilesContaining(Optional<Authenticatable> contentProfile) {
+        return contentProfile
+                .filter(authenticatable -> authenticatable instanceof ContentProfile)
+                .map(authenticatable -> projectRepository.findAllByContentProfilesContaining((ContentProfile) authenticatable))
+                .orElseGet(this.projectRepository::findByContentProfilesEmpty);
     }
 
     public Optional<Project> findById(Long id) {
@@ -97,50 +121,22 @@ public class ProjectService {
     public Optional<ProjectDto> updateProject(ProjectDto projectDto) {
         return this.projectRepository.findById(projectDto.getId())
                 .map(project -> {
-                    project.setName(projectDto.getName());
-                    project.setLink(projectDto.getLink());
-                    project.setDifficulty(projectDto.getDifficulty());
-                    project.setTags(projectDto.getTags()
-                            .stream()
-                            .map(tag -> this.projectTagRepository.findByTagIgnoreCase(tag).orElse(null))
-                            .filter(Objects::nonNull)
-                            .toList()
-                    );
-                    project.setContentProfiles(projectDto.getContentProfiles()
-                            .stream()
-                            .map(contentProfileId -> this.contentService.findById(contentProfileId).orElse(null))
-                            .filter(Objects::nonNull)
-                            .toList());
-                    project.setProjectDescription(new ProjectDescription(
-                            projectDto.getProjectDescription().getContentBlocks()
-                                    .stream()
-                                    .map(this::fromDto)
-                                    .toList()
-                    ));
-                    project.setThumbnail(new PictureBlock(
-                            projectDto.getThumbnail().getPicture(),
-                            projectDto.getThumbnail().isUrl(),
-                            projectDto.getThumbnail().getImageType()
-                    ));
+                    applyDtoToProject(projectDto, project);
                     return toDto(this.projectRepository.save(project));
                 });
     }
 
-    private ProjectDto toDto(Project project) {
+    public ProjectDto toDto(Project project) {
         final ProjectDescriptionDto descriptionDto = new ProjectDescriptionDto(
-                project.getProjectDescription().getContentBlocks()
-                        .stream()
-                        .map(this::toDto)
-                        .toList()
+                project.getProjectDescription().getMarkdown()
         );
-        final PictureBlockDto thumbnailDto = new PictureBlockDto();
         return new ProjectDto(
                 project.getId(),
                 project.getName(),
                 descriptionDto,
                 project.getLink(),
                 project.getDifficulty(),
-                thumbnailDto,
+                project.getThumbnailReference(),
                 project.getContentProfiles()
                         .stream()
                         .map(ContentProfile::getId)
@@ -150,33 +146,5 @@ public class ProjectService {
                         .map(ProjectTag::getTag)
                         .toList()
         );
-    }
-
-    private ContentBlockDto toDto(ContentBlock contentBlock) {
-        switch (contentBlock.getClass().getSimpleName()) {
-            case "PictureBlock" -> {
-                PictureBlock pictureBlock = (PictureBlock) contentBlock;
-                return new PictureBlockDto(pictureBlock.getPicture(), pictureBlock.isUrl(), pictureBlock.getImageType());
-            }
-            case "TextBlock" -> {
-                TextBlock textBlock = (TextBlock) contentBlock;
-                return new TextBlockDto(textBlock.getText(), textBlock.isHtml());
-            }
-            default -> throw new IllegalArgumentException("Unknown content block type");
-        }
-    }
-
-    private ContentBlock fromDto(ContentBlockDto contentBlockDto) {
-        switch (contentBlockDto.getClass().getSimpleName()) {
-            case "PictureBlockDto" -> {
-                PictureBlockDto pictureBlockDto = (PictureBlockDto) contentBlockDto;
-                return new PictureBlock(pictureBlockDto.getPicture(), pictureBlockDto.isUrl(), pictureBlockDto.getImageType());
-            }
-            case "TextBlockDto" -> {
-                TextBlockDto textBlockDto = (TextBlockDto) contentBlockDto;
-                return new TextBlock(textBlockDto.getText(), textBlockDto.isHtml());
-            }
-            default -> throw new IllegalArgumentException("Unknown content block type");
-        }
     }
 }

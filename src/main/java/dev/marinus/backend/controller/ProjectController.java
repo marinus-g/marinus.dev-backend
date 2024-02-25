@@ -1,12 +1,15 @@
 package dev.marinus.backend.controller;
 
 import dev.marinus.backend.dto.project.ProjectDto;
+import dev.marinus.backend.model.entity.Authenticatable;
 import dev.marinus.backend.security.annotation.RequiresCommand;
 import dev.marinus.backend.dto.project.TagDto;
 import dev.marinus.backend.service.ProjectService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,7 +39,7 @@ public class ProjectController {
                 .orElseThrow(NullPointerException::new); // this should never happen
     }
 
-    @GetMapping("/tag/all")
+    @GetMapping("/tags")
     public ResponseEntity<?> getTags() {
         return ResponseEntity.ok(this.projectService.getTags());
     }
@@ -70,5 +73,10 @@ public class ProjectController {
         return this.projectService.deleteProject(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProjectDto>> fetchAll(@AuthenticationPrincipal Authenticatable authenticatable) {
+        return ResponseEntity.ok(this.projectService.findAllByContentProfilesContaining(Optional.ofNullable(authenticatable)).stream().map(this.projectService::toDto).toList());
     }
 }

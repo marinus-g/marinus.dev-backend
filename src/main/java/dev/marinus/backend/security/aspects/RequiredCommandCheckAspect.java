@@ -18,7 +18,6 @@ public class RequiredCommandCheckAspect {
 
     @Before("@annotation(requiresCommand) && (@annotation(org.springframework.web.bind.annotation.PostMapping) || @annotation(org.springframework.web.bind.annotation.GetMapping) || @annotation(org.springframework.web.bind.annotation.PutMapping) || @annotation(org.springframework.web.bind.annotation.DeleteMapping))")
     public void checkRole(JoinPoint joinPoint, RequiresCommand requiresCommand) {
-        System.out.println("HELLO ITS ME");
         String requiredRole = requiresCommand.value();
         Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)

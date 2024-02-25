@@ -15,8 +15,7 @@ import java.util.List;
 @Setter
 public class ProjectDescription {
 
-    @OneToMany
-    @JoinColumn(name = "project_id")
-    private List<ContentBlock> contentBlocks;
+    @Column(name = "markdown", columnDefinition = "LONGTEXT")
+    private String markdown;
 
 }

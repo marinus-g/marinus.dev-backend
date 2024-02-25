@@ -21,8 +21,9 @@ public class Project {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    private PictureBlock thumbnail;
+    @Column(name = "thumbnail_reference")
+    private String thumbnailReference;
+
     @Column(name = "name")
     private String name;
 

@@ -10,7 +10,6 @@ import lombok.Setter;
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 public abstract class User {

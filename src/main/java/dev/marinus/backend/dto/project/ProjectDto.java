@@ -26,7 +26,8 @@ public class ProjectDto {
 
     private int difficulty;
 
-    private PictureBlockDto thumbnail;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String thumbnailReference;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private List<Long> contentProfiles;
