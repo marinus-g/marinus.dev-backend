@@ -19,5 +19,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findByContentProfilesEmpty();
 
+    boolean existsByThumbnailReference(String thumbnailReference);
 
 }

@@ -1,15 +1,26 @@
 package dev.marinus.backend.service;
 
+import dev.marinus.backend.repository.ProjectRepository;
 import lombok.SneakyThrows;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
+@EnableScheduling
 public class PictureService {
+
+    private final ProjectRepository projectRepository;
+
+    public PictureService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 
     @SneakyThrows
     public void deletePicture(String pictureUid) {
@@ -30,6 +41,23 @@ public class PictureService {
             file.createNewFile();
         }
         Files.write(file.toPath(), picture.getBytes());
+    }
+
+    @Scheduled(fixedDelay = 60, initialDelay = 2, timeUnit = TimeUnit.MINUTES)
+    public void deleteUnusedImages() {
+        File directory = new File("pictures");
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                final String[] splitted = file.getName().split("\\.");
+                int lengthToRemove = splitted[splitted.length - 1].length() + 1;
+                final String pictureUid = file.getName().substring(0, file.getName().length() - lengthToRemove);
+                if (this.projectRepository.existsByThumbnailReference(pictureUid)) {
+                    continue;
+                }
+                file.delete();
+            }
+        }
     }
 
     @SneakyThrows
