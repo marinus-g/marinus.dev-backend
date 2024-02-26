@@ -9,10 +9,13 @@ import dev.marinus.backend.repository.ProjectTagRepository;
 import io.micrometer.observation.ObservationFilter;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -44,17 +47,16 @@ public class ProjectService {
         project.setName(dto.getName());
         project.setLink(dto.getLink());
         project.setDifficulty(dto.getDifficulty());
-        project.setTags(dto.getTags() == null ? List.of() : dto.getTags()
+        project.setTags(dto.getTags() == null ? new ArrayList<>() : dto.getTags()
                 .stream()
                 .map(tag -> this.projectTagRepository.findByTagIgnoreCase(tag).orElse(null))
                 .filter(Objects::nonNull)
-                .toList()
-        );
-        project.setContentProfiles(dto.getContentProfiles() == null ? List.of() : dto.getContentProfiles()
+                .collect(Collectors.toList()));
+        project.setContentProfiles(dto.getContentProfiles() == null ? new ArrayList<>() : dto.getContentProfiles()
                 .stream()
                 .map(contentProfileId -> this.contentService.findById(contentProfileId).orElse(null))
                 .filter(Objects::nonNull)
-                .toList());
+                .collect(Collectors.toList()));
         project.setProjectDescription(new ProjectDescription(dto.getProjectDescription().getMarkdown()));
         project.setThumbnailReference(dto.getThumbnailReference());
     }
@@ -121,6 +123,7 @@ public class ProjectService {
     public Optional<ProjectDto> updateProject(ProjectDto projectDto) {
         return this.projectRepository.findById(projectDto.getId())
                 .map(project -> {
+                    pictureService.deletePicture(project.getThumbnailReference());
                     applyDtoToProject(projectDto, project);
                     return toDto(this.projectRepository.save(project));
                 });
