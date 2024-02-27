@@ -1,20 +1,21 @@
 package dev.marinus.backend.service;
 
-import dev.marinus.backend.dto.project.*;
+import dev.marinus.backend.dto.project.ProjectDescriptionDto;
+import dev.marinus.backend.dto.project.ProjectDto;
+import dev.marinus.backend.dto.project.TagDto;
 import dev.marinus.backend.model.entity.Authenticatable;
 import dev.marinus.backend.model.entity.content.profile.ContentProfile;
-import dev.marinus.backend.model.entity.project.*;
+import dev.marinus.backend.model.entity.project.Project;
+import dev.marinus.backend.model.entity.project.ProjectDescription;
+import dev.marinus.backend.model.entity.project.ProjectTag;
 import dev.marinus.backend.repository.ProjectRepository;
 import dev.marinus.backend.repository.ProjectTagRepository;
-import io.micrometer.observation.ObservationFilter;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +69,7 @@ public class ProjectService {
     public List<Project> findAllByContentProfilesContaining(Optional<Authenticatable> contentProfile) {
         return contentProfile
                 .filter(authenticatable -> authenticatable instanceof ContentProfile)
-                .map(authenticatable -> projectRepository.findAllByContentProfilesContaining((ContentProfile) authenticatable))
+                .map(authenticatable -> projectRepository.findByContentProfilesContainsOrContentProfilesEmpty((ContentProfile) authenticatable))
                 .orElseGet(this.projectRepository::findByContentProfilesEmpty);
     }
 

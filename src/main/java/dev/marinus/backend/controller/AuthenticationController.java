@@ -34,7 +34,6 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationDto> authenticate(HttpServletResponse response,
                                                           @AuthenticationPrincipal Authenticatable authenticatable) {
-        System.out.println("authenticatable: " + authenticatable);
         return Optional.ofNullable(authenticatable).map(auth -> {
             response.addCookie(authenticationService.buildCookie(auth));
             return ResponseEntity.ok(new AuthenticationDto(System.currentTimeMillis() + ONE_DAY.getSeconds() * 1000L));
